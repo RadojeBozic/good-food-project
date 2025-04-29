@@ -1,46 +1,56 @@
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import api from '../api';
 
 function Dashboard() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const handleLogout = async () => {
-    try {
-      const token = localStorage.getItem('token');
-  
-      await api.post('/logout', {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      });
-  
-      logout(); // Brišemo iz localStorage i AuthContext-a
-      navigate('/login');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
-  
+  if (!user) {
+    return <div>Učitavanje...</div>;
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-green-100">
-      <h1 className="text-3xl font-bold mb-6">Dobrodošli na Dashboard!</h1>
+    <div className="text-center">
+      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
-      <div className="bg-white p-6 rounded shadow-md text-center">
-        <h2 className="text-xl font-semibold mb-4">Korisnički profil</h2>
-        <p><strong>Ime:</strong> {user?.name}</p>
-        <p><strong>Email:</strong> {user?.email}</p>
-        <p><strong>Rola:</strong> {user?.role}</p>
-      </div>
+      {user.role === 'superadmin' && (
+        <div>
+          <h2 className="text-2xl mb-4">SuperAdmin kontrolna tabla</h2>
+          <ul className="list-unstyled">
+            <li>Korisnici - upravljanje</li>
+            <li>Proizvodi - pregled i kontrola</li>
+            <li>Statistika platforme</li>
+          </ul>
+        </div>
+      )}
 
-      <button
-        onClick={handleLogout}
-        className="btn btn-danger btn-sm"
-      >
-        Odjava
-      </button>
+      {user.role === 'admin' && (
+        <div>
+          <h2 className="text-2xl mb-4">Admin kontrolna tabla</h2>
+          <ul className="list-unstyled">
+            <li>Agenti - upravljanje</li>
+            <li>Proizvodi - pregled i kontrola</li>
+          </ul>
+        </div>
+      )}
+
+      {user.role === 'agent' && (
+        <div>
+          <h2 className="text-2xl mb-4">Agent kontrolna tabla</h2>
+          <ul className="list-unstyled">
+            <li>Moji proizvodi</li>
+            <li>Dodavanje novih proizvoda</li>
+          </ul>
+        </div>
+      )}
+
+      {user.role === 'customer' && (
+        <div>
+          <h2 className="text-2xl mb-4">Kupac kontrolna tabla</h2>
+          <ul className="list-unstyled">
+            <li>Ponuda proizvoda</li>
+            <li>Moje porudžbine (uskoro)</li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

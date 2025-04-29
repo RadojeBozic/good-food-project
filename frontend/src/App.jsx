@@ -5,6 +5,10 @@ import Home from './pages/Home';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/Layout';
+import About from './pages/About';
+import Contact from './pages/Contact';
+
+
 
 function App() {
   return (
@@ -13,6 +17,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
             <Route path="dashboard" element={
               <ProtectedRoute>

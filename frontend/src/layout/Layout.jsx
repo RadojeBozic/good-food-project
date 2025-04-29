@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 function Layout() {
   return (
     <div
-      className="flex flex-col min-h-screen"
+      className="flex flex-col min-h-screen "
       style={{
         backgroundImage: 'url("/images/good-food-background.jpg")',
         backgroundSize: 'cover',
@@ -15,9 +15,10 @@ function Layout() {
         backdropFilter: 'brightness(0.95)', // Blaga svetlina
       }}
     >
+      
       <Header />
       <main className="flex-grow p-4 flex justify-center">
-        <div style={{ maxWidth: '500px', width: '100%' }}>
+        <div style={{  width: '70%' }}>
           <Outlet />
         </div>
       </main>
