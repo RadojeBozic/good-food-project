@@ -55,7 +55,7 @@ function Login() {
 
         <button
           type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
+          className="btn btn-danger btn-sm"
         >
           Prijavi se
         </button>
