@@ -1,3 +1,11 @@
+## Project Screenshot
+
+- ![Homepage Screenshot](frontend/public/images/homepage-screenshot.png)
+
+- Welcome to Good-Food platform - connecting suppliers, customers, and delivery services!
+
+
+
 # Good-Food Project
 
 Good-Food is a fullstack application built with Laravel API backend and React frontend.  
@@ -37,34 +45,32 @@ Osmislili smo ga kao online platformu za trgovinu zdravom hranom između dobavlj
 - Razine korisnika: SuperAdmin, Admin, Agent, Kupac
 - Modularna i skalabilna arhitektura
 - Spreman za produkciono okruženje
+---
+
+## 📫 Contact
+
+- GitHub: [radojebozic](https://github.com/radojebozic)
+- Email: radojebozic1966@gmail.com
+- [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/radoje-bo%C5%BEi%C4%87-9b199930b/?otpToken=MTMwNjFjZTUxMDJkY2RjNGI0MmIwZmViNDExYWUyYjI4ZmNiZDE0ODlkYTk4YjYzN2JjZTAxNmU0NjVlNWZmMmY2ZDdkMWU5NTFiN2VkZjc3MGY4Yzg4NDdiZWE3OWY3M2E1YzgwMWM5NDNlYjgyNjUzYTgzMDFlLDEsMQ%3D%3D&midSig=1vHS6khS8HXHI1&eid=lx0d3p-m9x48k8n-73&midToken=AQFpFw3oBk_kKg&trkEmail=eml-email_pymk_02-header-0-profile_glimmer-null-lx0d3p%7Em9x48k8n%7E73-null-null&trk=eml-email_pymk_02-header-0-profile_glimmer&originalSubdomain=rs) 
 
 ---
 
 ## Installation Instructions
 
 ### Backend (Laravel)
-```bash
-cd good-food-api
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate --seed
-php artisan serve
+- cd good-food-api
+- composer install
+- cp .env.example .env
+- php artisan key:generate
+- php artisan migrate --seed
+- php artisan serve
 
 ### Frontend (React)
-cd frontend
-npm install
-npm run dev
-
-## Screenshots
+- cd frontend
+- npm install
+- npm run dev
 
 ## 📜 License
-All rights reserved © 2025 Good Food
-
-## 📫 Kontakt
-
-- GitHub: [radojebozic](https://github.com/radojebozic)
-- Email: radojebozic1966@gmail.com
-- [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/radoje-bo%C5%BEi%C4%87-9b199930b/?otpToken=MTMwNjFjZTUxMDJkY2RjNGI0MmIwZmViNDExYWUyYjI4ZmNiZDE0ODlkYTk4YjYzN2JjZTAxNmU0NjVlNWZmMmY2ZDdkMWU5NTFiN2VkZjc3MGY4Yzg4NDdiZWE3OWY3M2E1YzgwMWM5NDNlYjgyNjUzYTgzMDFlLDEsMQ%3D%3D&midSig=1vHS6khS8HXHI1&eid=lx0d3p-m9x48k8n-73&midToken=AQFpFw3oBk_kKg&trkEmail=eml-email_pymk_02-header-0-profile_glimmer-null-lx0d3p%7Em9x48k8n%7E73-null-null&trk=eml-email_pymk_02-header-0-profile_glimmer&originalSubdomain=rs) 
+- All rights reserved © 2025 Good Food
 
 
