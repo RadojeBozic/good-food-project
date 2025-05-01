@@ -40,4 +40,23 @@ public function index()
     return Product::latest()->get(); // ili paginacija kasnije
 }
 
+public function toggleFeatured($id)
+{
+    $product = Product::findOrFail($id);
+
+    // dozvoljeno samo autoru ili adminu/superadminu
+    if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
+        return response()->json(['message' => 'Nedozvoljeno'], 403);
+    }
+
+    $product->featured = !$product->featured;
+    $product->save();
+
+    return response()->json([
+        'message' => $product->featured ? 'Proizvod je istaknut.' : 'Istaknut status je uklonjen.',
+        'product' => $product
+    ]);
+}
+
+
 }

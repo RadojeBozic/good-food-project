@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+
 
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,6 +24,26 @@ function ProductList() {
 
     fetchProducts();
   }, []);
+
+  const handleToggleFeatured = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      await api.put(`/products/${id}/toggle-featured`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      // Osveži listu
+      const response = await api.get('/products');
+      setProducts(response.data);
+  
+    } catch (error) {
+      console.error('Greška pri togglovanju featured statusa:', error);
+      alert('Greška pri ažuriranju statusa proizvoda.');
+    }
+  };
+  
 
   if (loading) {
     return <div className="text-center">Učitavanje proizvoda...</div>;
@@ -49,6 +73,15 @@ function ProductList() {
                     Detalji
                   </Link>
                 </div>
+                {user && (user.role === 'admin' || user.role === 'superadmin') && (
+                  <button
+                    className={`btn btn-sm ${product.featured ? 'btn-warning' : 'btn-outline-warning'} mt-2`}
+                    onClick={() => handleToggleFeatured(product.id)}
+                  >
+                    {product.featured ? '❌ Opozovi isticanje' : '⭐ Istakni'}
+                  </button>
+                )}
+
               </div>
             </div>
           ))
