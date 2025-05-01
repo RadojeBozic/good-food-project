@@ -40,11 +40,27 @@ function Header() {
           <Link to="/" className="nav-link text-white">Home</Link>
           <Link to="/about" className="nav-link text-white">About</Link>
           <Link to="/contact" className="nav-link text-white">Contact</Link>
+          <Link to="/products" className="nav-link text-white">Proizvodi</Link>
+
         </nav>
       </div>
 
       {/* Desno: Welcome + Logout */}
       <div className="col-md-4 d-flex justify-content-end align-items-center">
+        {!user && (
+          <>
+            <Link to="/login" className="btn btn-outline-light btn-sm me-2">Login</Link>
+            <Link to="/register" className="btn btn-light btn-sm">Register</Link>
+          </>
+        )}
+
+        {user && (user.role === 'admin' || user.role === 'superadmin') && (
+          <Link to="/add-product" className="btn btn-outline-light btn-sm me-2">
+            Dodaj proizvod
+          </Link>
+        )}
+
+
         {user && (
           <>
             <span className="me-3">Welcome, {user.name}</span>

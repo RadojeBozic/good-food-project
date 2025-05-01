@@ -7,6 +7,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layout/Layout';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Register from './pages/Register';
+import ProductList from './pages/ProductList';
+import ProductDetail from './pages/ProductDetail';
+import AddProduct from './pages/AddProduct';
+
+
+
+
 
 
 
@@ -19,6 +27,13 @@ function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="products/:id" element={<ProductDetail />} />
+            <Route path="add-product" element={<AddProduct />} />
+
+
+            <Route path="register" element={<Register />} />
+            {/* Ova ruta će biti za login */}
             <Route path="login" element={<Login />} />
             <Route path="dashboard" element={
               <ProtectedRoute>

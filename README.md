@@ -1,6 +1,6 @@
 ## Project Screenshot
 
-- ![Homepage Screenshot](frontend/public/images/homepage-screenshot.png)
+ ![Homepage Screenshot](frontend/public/images/homepage-screenshot.png)
 
 - Welcome to Good-Food platform - connecting suppliers, customers, and delivery services!
 

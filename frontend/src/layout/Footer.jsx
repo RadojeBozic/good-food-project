@@ -22,10 +22,11 @@ function Footer() {
           <div className="col-md-3 mb-4">
             <h5>Linkovi</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-white">Proizvodi</a></li>
+              <li><a href="/products" className="text-white">Proizvodi</a></li>
               <li><a href="#" className="text-white">Partneri</a></li>
             </ul>
           </div>
+
 
           <div className="col-md-3 mb-4">
             <h5>Uputstva</h5>
