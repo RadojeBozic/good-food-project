@@ -58,5 +58,43 @@ public function toggleFeatured($id)
     ]);
 }
 
+public function featured()
+{
+    return Product::where('featured', true)->latest()->take(6)->get();
+}
+
+public function show($id)
+{
+    return Product::findOrFail($id);
+}
+
+public function update(Request $request, $id)
+{
+    $product = Product::findOrFail($id);
+    
+    if (!auth()->check()) {
+        return response()->json(['message' => 'Nije prijavljen korisnik.'], 401);
+    }
+    if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
+        return response()->json(['message' => 'Nedozvoljeno'], 403);
+    }
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'description' => 'required|string',
+        'image' => 'nullable|string',
+    ]);
+
+    $product->update([
+        'name' => $request->name,
+        'price' => $request->price,
+        'description' => $request->description,
+        'image' => $request->image,
+    ]);
+
+    return response()->json($product);
+}
+
 
 }

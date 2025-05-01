@@ -11,10 +11,7 @@ import Register from './pages/Register';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import AddProduct from './pages/AddProduct';
-
-
-
-
+import EditProduct from './pages/EditProduct';
 
 
 
@@ -30,6 +27,7 @@ function App() {
             <Route path="products" element={<ProductList />} />
             <Route path="products/:id" element={<ProductDetail />} />
             <Route path="add-product" element={<AddProduct />} />
+            <Route path="products/edit/:id" element={<EditProduct />} />
 
 
             <Route path="register" element={<Register />} />

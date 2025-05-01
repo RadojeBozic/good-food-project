@@ -73,6 +73,12 @@ function ProductList() {
                     Detalji
                   </Link>
                 </div>
+                {user && (user.role === 'admin' || user.role === 'superadmin' || user.id === product.user_id) && (
+                  <Link to={`/products/edit/${product.id}`} className="btn btn-sm btn-outline-primary mt-2">
+                    Uredi
+                  </Link>
+                )}
+
                 {user && (user.role === 'admin' || user.role === 'superadmin') && (
                   <button
                     className={`btn btn-sm ${product.featured ? 'btn-warning' : 'btn-outline-warning'} mt-2`}
