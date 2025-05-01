@@ -13,7 +13,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
+            'description' => 'required|string',           
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
     
