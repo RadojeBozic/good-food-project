@@ -14,6 +14,7 @@ import AddProduct from './pages/AddProduct';
 import EditProduct from './pages/EditProduct';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart';
+import MyOrders from './pages/MyOrders';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="add-product" element={<AddProduct />} />
             <Route path="products/edit/:id" element={<EditProduct />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/my-orders" element={<MyOrders />} />
 
             <Route path="register" element={<Register />} />
             {/* Ova ruta će biti za login */}

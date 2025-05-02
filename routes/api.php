@@ -27,9 +27,12 @@ Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/products/{id}', [ProductController::class, 'update']); // sad je zaštićeno
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+    Route::post('/checkout', [ProductController::class, 'checkout']);
+    Route::get('/my-orders', [ProductController::class, 'myOrders']);
 
     // sve ostale admin rute...
 });
+
 
 Route::get('/me', function () {
     return auth()->user();

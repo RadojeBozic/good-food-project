@@ -134,6 +134,40 @@ public function show($id)
     return response()->json($product);
 }
 
+public function checkout(Request $request)
+{
+    $user = auth()->user();
+    $items = $request->input('cart');
+
+    $total = 0;
+    foreach ($items as $item) {
+        $product = Product::findOrFail($item['id']);
+        if ($product->stock < $item['quantity']) {
+            return response()->json(['message' => "Nema dovoljno zaliha za {$product->name}"], 400);
+        }
+        $total += $product->price * $item['quantity'];
+    }
+    
+    // 1. Kreiraj Order
+    $order = $user->orders()->create(['total' => $total]);
+    
+    // 2. Dodaj stavke i smanji stock
+    foreach ($items as $item) {
+        $product = Product::findOrFail($item['id']);
+        $order->items()->create([
+            'product_id' => $product->id,
+            'quantity' => $item['quantity'],
+            'price' => $product->price,
+        ]);
+        $product->stock -= $item['quantity'];
+        $product->save();
+    }
+    
+
+    return response()->json(['message' => 'Porudžbina uspešno obrađena.']);
+}
+
+
 public function destroy($id)
 {
     if (!auth()->check()) {
@@ -151,6 +185,13 @@ public function destroy($id)
 
     return response()->json(['message' => 'Proizvod je uspešno obrisan.']);
 }
+
+public function myOrders()
+{
+    return auth()->user()->orders()->with(['items' => fn($q) => $q->whereHas('product')])
+    ->latest()->get();
+}
+
 
 
 

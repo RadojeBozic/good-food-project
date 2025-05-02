@@ -1,4 +1,5 @@
 import { useCart } from '../contexts/CartContext';
+import api from '../api';
 import { Link } from 'react-router-dom';
 
 function Cart() {
@@ -9,6 +10,25 @@ function Cart() {
   if (cart.length === 0) {
     return <div className="text-center mt-5">🛒 Vaša korpa je prazna.</div>;
   }
+
+  const handleCheckout = async () => {
+    const token = localStorage.getItem('token');
+  
+    try {
+      const response = await api.post('/checkout', { cart }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      alert(response.data.message);
+      clearCart();
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || 'Greška prilikom obrade porudžbine.');
+    }
+  };
+  
 
   return (
     <div className="container mt-5">
@@ -37,8 +57,10 @@ function Cart() {
       </ul>
       <h4 className="mb-3">Ukupno: {total.toFixed(2)} RSD</h4>
       <button className="btn btn-outline-danger me-3" onClick={clearCart}>🧹 Isprazni korpu</button>
-      <button className="btn btn-success">✅ Kupi</button>
-    </div>
+      <button className="btn btn-success" onClick={handleCheckout}>
+        ✅ Kupi
+      </button>    
+      </div>
   );
 }
 

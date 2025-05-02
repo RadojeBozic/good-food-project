@@ -84,6 +84,9 @@ function Header() {
               </span>
             )}
           </Link>
+          <Link to="/my-orders" className="nav-link">
+            🧾 Moje porudžbine
+          </Link>
       </div>
 
     </div>
