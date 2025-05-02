@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { Link } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext';
+
 
 function Home() {
   const [featured, setFeatured] = useState([]);
+  const { addToCart } = useCart();
+
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -41,6 +45,12 @@ function Home() {
               <div className="card-footer d-flex justify-content-between">
                 <span className="fw-bold">{product.price} RSD</span>
                 <Link to={`/products/${product.id}`} className="btn btn-sm btn-outline-success">Detalji</Link>
+                <button
+                  className="btn btn-sm btn-outline-secondary mt-2"
+                  onClick={() => addToCart(product)}
+                >
+                  Dodaj u 🛒 
+                </button>
               </div>
             </div>
           </div>

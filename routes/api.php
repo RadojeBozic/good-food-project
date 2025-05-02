@@ -24,5 +24,14 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/featured', [ProductController::class, 'featured']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
-Route::put('/products/{id}', [ProductController::class, 'update']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/products/{id}', [ProductController::class, 'update']); // sad je zaštićeno
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+    // sve ostale admin rute...
+});
+
+Route::get('/me', function () {
+    return auth()->user();
+});
 

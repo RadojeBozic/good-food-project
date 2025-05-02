@@ -12,12 +12,14 @@ import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import AddProduct from './pages/AddProduct';
 import EditProduct from './pages/EditProduct';
-
+import { CartProvider } from './contexts/CartContext';
+import Cart from './pages/Cart';
 
 
 function App() {
   return (
     <AuthProvider>
+      <CartProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -28,7 +30,7 @@ function App() {
             <Route path="products/:id" element={<ProductDetail />} />
             <Route path="add-product" element={<AddProduct />} />
             <Route path="products/edit/:id" element={<EditProduct />} />
-
+            <Route path="/cart" element={<Cart />} />
 
             <Route path="register" element={<Register />} />
             {/* Ova ruta će biti za login */}
@@ -42,6 +44,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      </CartProvider>
     </AuthProvider>
   );
 }

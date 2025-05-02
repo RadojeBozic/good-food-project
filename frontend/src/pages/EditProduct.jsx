@@ -11,6 +11,7 @@ function EditProduct() {
     price: '',
     description: '',
     image: '',
+    stock: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -41,10 +42,20 @@ function EditProduct() {
 
     try {
       const token = localStorage.getItem('token');
+      console.log('Token u localStorage:', localStorage.getItem('token'));
+      console.log('Token:', token);
+
+      if (!token) {
+        console.error('Token nije pronađen u localStorage');
+        setError('Greška: Token nije pronađen.');
+        return;
+      }
       await api.put(`/products/${id}`, product, {
         headers: {
           Authorization: `Bearer ${token}`,
+
         },
+
       });
 
       alert('Proizvod uspešno ažuriran!');
@@ -78,6 +89,19 @@ function EditProduct() {
           <label className="form-label">Slika (URL)</label>
           <input type="text" name="image" value={product.image} onChange={handleChange} className="form-control" />
         </div>
+        <div className="mb-3">
+          <label className="form-label">Količina na stanju</label>
+          <input
+            type="number"
+            name="stock"
+            value={product.stock}
+            onChange={handleChange}
+            className="form-control"
+            required
+            min="0"
+          />
+        </div>
+
         <button type="submit" className="btn btn-primary w-100">Sačuvaj izmene</button>
       </form>
     </div>

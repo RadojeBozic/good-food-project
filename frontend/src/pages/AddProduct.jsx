@@ -7,6 +7,7 @@ function AddProduct() {
     price: '',
     description: '',
     image: '',
+    stock: 0,
   });
 
   const [submittedProduct, setSubmittedProduct] = useState(null);
@@ -31,6 +32,7 @@ function AddProduct() {
       formData.append('price', product.price);
       formData.append('description', product.description);
       formData.append('image', product.image);
+      formData.append('stock', product.stock); // dodajemo količinu na stanju
   
       const response = await api.post('/products', formData, {
         headers: {
@@ -45,11 +47,18 @@ function AddProduct() {
         price: '',
         description: '',
         image: '',
+        stock: 0,
       });
   
     } catch (err) {
       console.error('Greška pri dodavanju proizvoda:', err);
-      setError('Došlo je do greške. Proverite podatke i pokušajte ponovo.');
+      if (err.response?.status === 422) {
+        const errors = err.response.data.errors;
+        const messages = Object.values(errors).flat().join(' ');
+        setError(messages);
+      } else {
+        setError('Došlo je do greške. Proverite podatke i pokušajte ponovo.');
+      }
     } finally {
       setLoading(false);
     }
@@ -108,6 +117,20 @@ function AddProduct() {
               onChange={(e) => setProduct({ ...product, image: e.target.files[0] })}
             />
           </div>
+
+          <div className="mb-3">
+            <label className="form-label">Količina na stanju</label>
+            <input
+              type="number"
+              name="stock"
+              value={product.stock}
+              onChange={handleChange}
+              className="form-control"
+              required
+              min="0"
+            />
+          </div>
+
 
           <button
             type="submit"

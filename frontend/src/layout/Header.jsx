@@ -2,10 +2,13 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import { useCart } from '../contexts/CartContext';
+
 
 function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { cart } = useCart();
 
   const handleLogout = async () => {
     try {
@@ -72,6 +75,15 @@ function Header() {
             </button>
           </>
         )}
+
+          <Link to="/cart" className="btn btn-outline-light position-relative">
+            🛒 Korpa
+            {cart.length > 0 && (
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {cart.length}
+              </span>
+            )}
+          </Link>
       </div>
 
     </div>
