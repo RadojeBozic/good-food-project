@@ -18,7 +18,7 @@ function Layout() {
       
       <Header />
       <main className="flex-grow p-4 flex justify-center">
-        <div style={{  width: '70%' }}>
+        <div style={{  width: '100%' }}>
           <Outlet />
         </div>
       </main>

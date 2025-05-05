@@ -15,6 +15,12 @@ import EditProduct from './pages/EditProduct';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart';
 import MyOrders from './pages/MyOrders';
+import ProtectedAdminRoute from './routes/ProtectedAdminRoute';
+import AdminLayout from './admin/layout/AdminLayout';
+import AdminDashboard from './admin/pages/AdminDashboard';
+import AdminOrders from './admin/pages/AdminOrders';
+import AdminUsers from './admin/pages/AdminUsers';
+import AdminProducts from './admin/pages/AdminProducts';
 
 
 function App() {
@@ -43,7 +49,18 @@ function App() {
               </ProtectedRoute>
             } />
             {/* Ovde ćemo kasnije dodati About, Contact, Products */}
+            <Route path="/admin" element={
+            <ProtectedAdminRoute>
+              <AdminLayout />
+            </ProtectedAdminRoute>
+          }>
+            <Route index element={<AdminDashboard />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="products" element={<AdminProducts />} />
           </Route>
+          </Route>
+          
         </Routes>
       </Router>
       </CartProvider>

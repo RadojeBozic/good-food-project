@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useCart } from '../contexts/CartContext';
 
-
 function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { cart } = useCart();
+
 
   const handleLogout = async () => {
     try {
@@ -87,6 +87,11 @@ function Header() {
           <Link to="/my-orders" className="nav-link">
             🧾 Moje porudžbine
           </Link>
+          {user && (user.role === 'admin' || user.role === 'superadmin') && (
+          <Link to="/admin" className="btn btn-warning ms-3">
+            🔧 Admin Panel
+          </Link>
+        )}
       </div>
 
     </div>
