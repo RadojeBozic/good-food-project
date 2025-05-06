@@ -1,0 +1,104 @@
+# 📘 Projekat: Good-Food
+
+Good-Food je e-commerce aplikacija koja povezuje lokalne proizvođače hrane sa kupcima. Sistem podržava registraciju korisnika, dodavanje i prikaz proizvoda, korpu, porudžbine, kao i napredni **admin panel** za upravljanje svim poslovnim entitetima.
+
+---
+
+## 🌟 Ciljevi projekta
+
+* Omogućiti korisnicima da pretražuju i kupuju proizvode
+* Omogućiti proizvođačima da unose i menjaju proizvode
+* Adminima omogućiti nadzor i kontrolu: porudžbine, korisnici, proizvodi
+* Evidencija porudžbina sa statusima (pending, processed, completed)
+* Skalabilnost ka mobilnoj aplikaciji i dodatnim funkcionalnostima
+
+---
+
+## 👥 Uloge korisnika
+
+| Rola       | Opis                                                           |
+| ---------- | -------------------------------------------------------------- |
+| Gost       | Može da vidi proizvode, registruje se ili prijavi              |
+| Korisnik   | Može da dodaje proizvode u korpu i kupuje                      |
+| Admin      | Može da upravlja proizvodima, porudžbinama i korisnicima       |
+| Superadmin | Isti kao admin, ali sa najvišim pravima (npr. brisanje admina) |
+
+---
+
+## 🔧 Tehnologije
+
+* **Frontend**: React + Vite + Bootstrap (ili Tailwind opcionalno)
+* **Backend**: Laravel + Sanctum autentifikacija
+* **Baza**: MySQL (via WAMP/LAMP stack)
+* **API komunikacija**: Axios
+
+---
+
+## 📁 Glavni folderi
+
+* `src/pages/` – korisničke stranice
+* `src/admin/pages/` – admin deo (Dashboard, Orders, Users...)
+* `src/contexts/` – Auth i Cart context
+* `api.php` – backend rute
+
+---
+
+## 🚀 Sledeći koraci (planirano)
+
+* Filtriranje porudžbina po statusu i korisniku
+* PDF generacija potvrde o kupovini
+* Admin korisnički panel za brisanje i dodelu uloga
+* Istorija aktivnosti / audit log (opciono)
+
+
+# 🔢 Good-Food API Rute
+
+Ova dokumentacija pokriva sve trenutno dostupne API rute za projekat **Good-Food**.
+
+---
+
+## 🌐 Javne rute
+
+| Metod | Ruta                     | Opis                     |
+| ----- | ------------------------ | ------------------------ |
+| POST  | `/api/register`          | Registracija korisnika   |
+| POST  | `/api/login`             | Prijava korisnika        |
+| GET   | `/api/products`          | Svi proizvodi            |
+| GET   | `/api/products/featured` | Istaknuti proizvodi      |
+| GET   | `/api/products/{id}`     | Detalji jednog proizvoda |
+
+---
+
+## 🔒 Zaštićene korisničke rute (`auth:sanctum`)
+
+| Metod  | Ruta                                 | Opis                                         |
+| ------ | ------------------------------------ | -------------------------------------------- |
+| GET    | `/api/user`                          | Dohvatanje trenutnog korisnika               |
+| POST   | `/api/logout`                        | Odjava                                       |
+| POST   | `/api/products`                      | Dodavanje proizvoda (autorizovani korisnici) |
+| PUT    | `/api/products/{id}`                 | Ažuriranje proizvoda                         |
+| DELETE | `/api/products/{id}`                 | Brisanje proizvoda                           |
+| PUT    | `/api/products/{id}/toggle-featured` | Isticanje proizvoda                          |
+| POST   | `/api/checkout`                      | Slanje porudžbine                            |
+| GET    | `/api/my-orders`                     | Prikaz korisnikovih porudžbina               |
+
+---
+
+## 🔒 Admin rute (`role: admin/superadmin`)
+
+| Metod | Ruta                            | Opis                              |
+| ----- | ------------------------------- | --------------------------------- |
+| GET   | `/api/admin/orders`             | Pregled svih porudžbina u sistemu |
+| PATCH | `/api/admin/orders/{id}/status` | Promena statusa porudžbine        |
+
+> Svi admin endpoint-i zahtevaju validan Bearer token i ulogovanog korisnika sa rolom `admin` ili `superadmin`.
+
+---
+
+## ✅ Napomene
+
+* Autentifikacija se vrši putem Laravel Sanctum.
+* Svi zahtevi moraju imati `Authorization: Bearer {token}` zaglavlje osim javnih.
+* Token se čuva u `localStorage` i koristi preko Axios interceptora.
+
+---
