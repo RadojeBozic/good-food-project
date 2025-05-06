@@ -7,18 +7,27 @@ use App\Models\Order;
 
 class AdminOrderController extends Controller
 {
-    public function index()
-    {
-        $user = auth()->user();
-
-        if (!in_array($user->role, ['admin', 'superadmin'])) {
-            return response()->json(['message' => 'Nedozvoljeno'], 403);
-        }
-
-        $orders = Order::with(['user', 'items.product'])->latest()->get();
-
-        return response()->json($orders);
+    public function index(Request $request)
+{
+    $user = auth()->user();
+    if (!in_array($user->role, ['admin', 'superadmin'])) {
+        return response()->json(['message' => 'Nedozvoljeno'], 403);
     }
+
+    $query = Order::with(['user', 'items.product'])->latest();
+
+    if ($request->has('status')) {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->has('user_id')) {
+        $query->where('user_id', $request->user_id);
+    }
+
+    return $query->get();
+}
+
+
 
     public function updateStatus(Request $request, $id)
     {

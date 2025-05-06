@@ -24,16 +24,21 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin deo
     Route::get('/admin/orders', [\App\Http\Controllers\Api\AdminOrderController::class, 'index']);
     Route::patch('/admin/orders/{id}/status', [\App\Http\Controllers\Api\AdminOrderController::class, 'updateStatus']);
+    Route::get('/admin/users', [\App\Http\Controllers\Api\AdminUserController::class, 'index']);
+    Route::patch('/admin/users/{id}/role', [\App\Http\Controllers\Api\AdminUserController::class, 'updateRole']);
+    Route::delete('/admin/users/{id}', [\App\Http\Controllers\Api\AdminUserController::class, 'destroy']);
+
+
 });
 
 
-// Javno dostupne rute
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/featured', [ProductController::class, 'featured']);
-Route::get('/products/{id}', [ProductController::class, 'show']);
-Route::get('/me', function () {
-    return auth()->user();
+    // Javno dostupne rute
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/products/featured', [ProductController::class, 'featured']);
+    Route::get('/products/{id}', [ProductController::class, 'show']);
+    Route::get('/me', function () {
+        return auth()->user();
 });
 
