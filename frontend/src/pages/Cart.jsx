@@ -28,6 +28,23 @@ function Cart() {
       alert(err.response?.data?.message || 'Greška prilikom obrade porudžbine.');
     }
   };
+
+  const handleStripeCheckout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await api.post('/stripe/checkout', { cart }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      // Redirektuj korisnika na Stripe Checkout stranicu
+      window.location.href = response.data.url;
+    } catch (err) {
+      console.error('Greška pri Stripe checkoutu:', err);
+      alert('Plaćanje nije uspelo.');
+    }
+  };
   
 
   return (
@@ -59,7 +76,10 @@ function Cart() {
       <button className="btn btn-outline-danger me-3" onClick={clearCart}>🧹 Isprazni korpu</button>
       <button className="btn btn-success" onClick={handleCheckout}>
         ✅ Kupi
-      </button>    
+      </button> 
+      <button className="btn btn-primary w-100 mt-4" onClick={handleStripeCheckout}>
+        💳 Plati putem Stripe
+      </button>   
       </div>
   );
 }

@@ -41,4 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', function () {
         return auth()->user();
 });
+    Route::post('/stripe/checkout', [\App\Http\Controllers\Api\StripeController::class, 'checkout']);
+
 

@@ -52,10 +52,25 @@ function MyOrders() {
                   </div>
                 </li>
               ))}
+              {order.status === 'completed' && (
+            <div className="card-footer text-end">
+              <a
+                href={`http://localhost:8000/storage/pdf/porudzbina-${order.id}.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-sm btn-outline-primary"
+              >
+                📄 Preuzmi PDF potvrdu
+              </a>
+            </div>
+          )}
             </ul>
           </div>
+          
+          
         ))
       )}
+      
     </div>
   );
 }

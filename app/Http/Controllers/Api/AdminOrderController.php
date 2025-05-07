@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+use App\Mail\OrderConfirmed;
+use Illuminate\Support\Facades\Mail;
 
 class AdminOrderController extends Controller
 {
@@ -44,6 +48,24 @@ class AdminOrderController extends Controller
         $order = Order::findOrFail($id);
         $order->status = $request->status;
         $order->save();
+
+            // ✅ Ako je status završen – generiši PDF
+        if ($order->status === 'completed') {
+            $pdf = Pdf::loadView('pdf.order', ['order' => $order]);
+            $pdfPath = "pdf/porudzbina-{$order->id}.pdf";
+            Storage::disk('public')->put($pdfPath, $pdf->output());
+        }
+
+        // ✅ Ako je status završen – pošalji email
+        if ($order->status === 'completed') {
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.order', ['order' => $order]);
+            $pdfPath = "pdf/porudzbina-{$order->id}.pdf";
+            \Storage::disk('public')->put($pdfPath, $pdf->output());
+        
+            // 📧 Pošalji mejl korisniku
+            Mail::to($order->user->email)->send(new OrderConfirmed($order, $pdfPath));
+        }
+        
 
         return response()->json([
             'message' => 'Status porudžbine ažuriran.',

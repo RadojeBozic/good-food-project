@@ -111,6 +111,8 @@ return ( <div className="container mt-5"> <h2 className="mb-4">📦 Sve porudžb
       </select>
     </div>
   </div>
+ 
+
 
   {orders.length === 0 ? (
     <div className="text-muted text-center">Nema porudžbina.</div>
@@ -135,6 +137,8 @@ return ( <div className="container mt-5"> <h2 className="mb-4">📦 Sve porudžb
             <option value="completed">🟢 Završeno</option>
           </select>
         </div>
+      
+
 
         <ul className="list-group list-group-flush">
           {order.items.map(item => (
@@ -146,6 +150,13 @@ return ( <div className="container mt-5"> <h2 className="mb-4">📦 Sve porudžb
             </li>
           ))}
         </ul>
+        <a
+  href={`http://localhost:8000/storage/pdf/porudzbina-${order.id}.pdf`}
+  target="_blank"
+  className="btn btn-sm btn-outline-secondary ms-2"
+>
+  🧾 PDF
+</a>
       </div>
     ))
   )}
