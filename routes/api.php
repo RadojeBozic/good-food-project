@@ -16,6 +16,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/products/{id}', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
     Route::put('/products/{id}/toggle-featured', [ProductController::class, 'toggleFeatured']);
+    Route::get('/my-products', [ProductController::class, 'myProducts']);
+    Route::post('/import-products', [\App\Http\Controllers\Api\ProductController::class, 'import'])
+    ->middleware('auth:sanctum');
+
+
 
     // Korpa i porudžbine
     Route::post('/checkout', [ProductController::class, 'checkout']);
@@ -42,5 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
         return auth()->user();
 });
     Route::post('/stripe/checkout', [\App\Http\Controllers\Api\StripeController::class, 'checkout']);
+
 
 

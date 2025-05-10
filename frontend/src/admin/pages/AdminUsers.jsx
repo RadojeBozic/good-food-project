@@ -90,6 +90,7 @@ function AdminUsers() {
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
                   <option value="superadmin">SuperAdmin</option>
+                  <option value="procurer">Procurer</option>
                 </select>
                 {user.role !== 'superadmin' && (
                     <button className="btn btn-sm btn-danger ms-2" onClick={() => handleDeleteUser(user.id)}>

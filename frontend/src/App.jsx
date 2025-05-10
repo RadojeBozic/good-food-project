@@ -21,7 +21,9 @@ import AdminDashboard from './admin/pages/AdminDashboard';
 import AdminOrders from './admin/pages/AdminOrders';
 import AdminUsers from './admin/pages/AdminUsers';
 import AdminProducts from './admin/pages/AdminProducts';
-
+import MyProducts from './pages/MyProducts';
+import ProcurerDashboard from './pages/ProcurerDashboard';
+import ImportProducts from './pages/ImportProducts';
 
 function App() {
   return (
@@ -39,6 +41,10 @@ function App() {
             <Route path="products/edit/:id" element={<EditProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/my-products" element={<MyProducts />} />
+            <Route path="/procurer" element={<ProcurerDashboard />} />
+            <Route path="/import-products" element={<ImportProducts />} />
+
 
             <Route path="register" element={<Register />} />
             {/* Ova ruta će biti za login */}

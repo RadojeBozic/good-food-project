@@ -63,6 +63,16 @@ function Header() {
           </Link>
         )}
 
+        {user?.role === 'procurer' && (
+          <Link to="/my-products" className="btn btn-outline-light ms-2">📦 Moji proizvodi</Link>
+        )}
+
+        {user?.role === 'procurer' && (
+          <Link to="/procurer" className="btn btn-outline-light ms-2">📋 Moj Dashboard</Link>
+        )}
+
+
+
 
         {user && (
           <>

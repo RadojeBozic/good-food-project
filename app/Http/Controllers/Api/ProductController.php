@@ -5,16 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ProductsImport;
 
 class ProductController extends Controller
 {
     public function store(Request $request)
     {
+
+         if (!in_array(auth()->user()->role, ['admin', 'superadmin', 'procurer'])) {
+        return response()->json(['message' => 'Nemate dozvolu za dodavanje.'], 403);
+    }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'stock' => 'required|integer|min:0',
         ]);
 
@@ -48,6 +54,10 @@ class ProductController extends Controller
 
     public function toggleFeatured($id)
     {
+
+        if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
+            return response()->json(['message' => 'Nemate dozvolu.'], 403);
+        }
         $product = Product::findOrFail($id);
         $user = auth()->user();
 
@@ -69,6 +79,10 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $user = auth()->user();
 
+        if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
+            return response()->json(['message' => 'Nemate dozvolu.'], 403);
+        }
+
         if ($user->id !== $product->user_id && !in_array($user->role, ['admin', 'superadmin'])) {
             return response()->json(['message' => 'Nedozvoljeno'], 403);
         }
@@ -88,6 +102,10 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
+
+        if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
+            return response()->json(['message' => 'Nemate dozvolu.'], 403);
+        }
         $product = Product::findOrFail($id);
         $user = auth()->user();
 
@@ -149,4 +167,31 @@ class ProductController extends Controller
 {
     return Order::with('user', 'items.product')->latest()->get();
 }
+
+public function myProducts()
+{
+    $user = auth()->user();
+
+    if ($user->role !== 'procurer') {
+        return response()->json(['message' => 'Nedozvoljeno'], 403);
+    }
+
+    return Product::where('user_id', $user->id)->latest()->get();
+}
+
+public function import(Request $request)
+{
+    if (!in_array(auth()->user()->role, ['procurer', 'admin', 'superadmin'])) {
+        return response()->json(['message' => 'Nemate dozvolu.'], 403);
+    }
+
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
+
+    Excel::import(new ProductsImport, $request->file('file'));
+
+    return response()->json(['message' => 'Uvoz uspešan.']);
+}
+
 }
