@@ -6,12 +6,15 @@ function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({
     name: '',
     price: '',
     description: '',
     image: '',
     stock: 0,
+    category_id: '',
+    barcode: '',
   });
 
   const [loading, setLoading] = useState(true);
@@ -64,6 +67,18 @@ function EditProduct() {
       console.error(err);
       setError('Greška pri ažuriranju.');
     }
+       useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get('/categories');
+      setCategories(response.data);
+    } catch (err) {
+      console.error('Greška pri učitavanju kategorija:', err);
+    }
+  };
+
+  fetchCategories();
+}, []);
   };
 
   if (loading) return <div>Učitavanje...</div>;
@@ -85,6 +100,30 @@ function EditProduct() {
           <label className="form-label">Opis</label>
           <textarea name="description" value={product.description} onChange={handleChange} className="form-control" rows="3" required />
         </div>
+        <div className="mb-3">
+            <label className="form-label">Kategorija</label>
+            <select
+              name="category_id"
+              value={product.category_id}
+              onChange={handleChange}
+              className="form-select"
+              required
+            >
+              <option value="">-- Odaberi kategoriju --</option>
+              {categories.map((cat) => (
+                <>
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                  {cat.children.map((child) => (
+                    <option key={child.id} value={child.id}>
+                      &nbsp;&nbsp;&nbsp;↳ {child.name}
+                    </option>
+                  ))}
+                </>
+              ))}
+            </select>
+          </div>
         <div className="mb-4">
           <label className="form-label">Slika (URL)</label>
           <input type="text" name="image" value={product.image} onChange={handleChange} className="form-control" />
@@ -101,6 +140,18 @@ function EditProduct() {
             min="0"
           />
         </div>
+        <div className="mb-3">
+          <label className="form-label">Bar kod (opciono)</label>
+          <input
+            type="text"
+            name="barcode"
+            value={product.barcode}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Unesite ili skenirajte bar kod"
+          />
+        </div>
+
 
         <button type="submit" className="btn btn-primary w-100">Sačuvaj izmene</button>
       </form>

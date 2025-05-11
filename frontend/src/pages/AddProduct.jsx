@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../api';
 
 function AddProduct() {
+  const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({
     name: '',
     price: '',
     description: '',
     image: '',
     stock: 0,
+    category_id: '',
+    barcode: '',
   });
 
   const [submittedProduct, setSubmittedProduct] = useState(null);
@@ -48,6 +51,7 @@ function AddProduct() {
         description: '',
         image: '',
         stock: 0,
+        category_id: '',
       });
   
     } catch (err) {
@@ -62,6 +66,20 @@ function AddProduct() {
     } finally {
       setLoading(false);
     }
+
+    useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get('/categories');
+      setCategories(response.data);
+    } catch (err) {
+      console.error('Greška pri učitavanju kategorija:', err);
+    }
+  };
+
+  fetchCategories();
+}, []);
+
   };
 
   return (
@@ -108,6 +126,32 @@ function AddProduct() {
             />
           </div>
 
+          <div className="mb-3">
+            <label className="form-label">Kategorija</label>
+            <select
+              name="category_id"
+              value={product.category_id}
+              onChange={handleChange}
+              className="form-select"
+              required
+            >
+              <option value="">-- Odaberi kategoriju --</option>
+              {categories.map((cat) => (
+                <>
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                  {cat.children.map((child) => (
+                    <option key={child.id} value={child.id}>
+                      &nbsp;&nbsp;&nbsp;↳ {child.name}
+                    </option>
+                  ))}
+                </>
+              ))}
+            </select>
+          </div>
+
+
           <div className="mb-4">
             <label className="form-label">Slika (fajl)</label>
             <input
@@ -130,6 +174,19 @@ function AddProduct() {
               min="0"
             />
           </div>
+
+                <div className="mb-3">
+        <label className="form-label">Bar kod (opciono)</label>
+        <input
+          type="text"
+          name="barcode"
+          value={product.barcode}
+          onChange={handleChange}
+          className="form-control"
+          placeholder="Unesite ili skenirajte bar kod"
+        />
+      </div>
+
 
 
           <button

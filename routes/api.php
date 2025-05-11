@@ -43,6 +43,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/featured', [ProductController::class, 'featured']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
+    Route::get('/categories', [\App\Http\Controllers\Api\CategoryController::class, 'index']);
+    Route::get('/categories-with-count', [\App\Http\Controllers\Api\CategoryController::class, 'withProductCount']);
+
+
     Route::get('/me', function () {
         return auth()->user();
 });

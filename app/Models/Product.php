@@ -14,6 +14,9 @@ class Product extends Model
         'stock',
         'user_id',
         'featured',
+        'category_id',
+        'barcode',
+
     ];
 
     public function user()
@@ -25,5 +28,10 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    public function category()
+{
+    return $this->belongsTo(Category::class);
+}
+
 }
 

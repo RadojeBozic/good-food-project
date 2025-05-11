@@ -16,13 +16,21 @@ class ProductController extends Controller
          if (!in_array(auth()->user()->role, ['admin', 'superadmin', 'procurer'])) {
         return response()->json(['message' => 'Nemate dozvolu za dodavanje.'], 403);
     }
-        $validated = $request->validate([
+       $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
             'image' => 'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'barcode' => 'nullable|string|max:50|unique:products,barcode',
+
         ]);
+
+            if (empty($validated['barcode'])) {
+                $validated['barcode'] = 'GF-' . strtoupper(uniqid());
+            }
+
 
         $imagePath = $request->hasFile('image')
             ? $request->file('image')->store('products', 'public')
@@ -32,15 +40,43 @@ class ProductController extends Controller
             ...$validated,
             'image' => $imagePath,
             'user_id' => $request->user()->id,
+            'category_id' => $validated['category_id'],
         ]);
 
         return response()->json($product, 201);
     }
 
-    public function index()
-    {
-        return Product::latest()->get();
+   public function index(Request $request)
+{
+    $query = Product::with('category')->latest();
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('description', 'like', "%{$search}%");
+        });
     }
+
+    if ($request->filled('barcode')) {
+        $query->where('barcode', $request->barcode);
+    }
+
+    if ($request->filled('category_id')) {
+        $query->where('category_id', $request->category_id);
+    }
+
+    if ($request->filled('price_min')) {
+        $query->where('price', '>=', $request->price_min);
+    }
+
+    if ($request->filled('price_max')) {
+        $query->where('price', '<=', $request->price_max);
+    }
+
+    return $query->get();
+}
+
 
     public function featured()
     {
@@ -91,8 +127,11 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'image' => 'nullable|string',
+            'image' => 'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'barcode' => 'nullable|string|max:50|unique:products,barcode',
+
         ]);
 
         $product->update($validated);
@@ -141,6 +180,7 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'quantity' => $item['quantity'],
                 'price' => $product->price,
+                'category_id' => $validated['category_id'],
             ]);
 
             $product->decrement('stock', $item['quantity']);

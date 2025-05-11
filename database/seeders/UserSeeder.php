@@ -10,6 +10,9 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        User::truncate();
+        
+       User::where('email', 'superadmin@goodfood.com')->delete();
         // SuperAdmin
         User::create([
             'name' => 'Super Admin',
