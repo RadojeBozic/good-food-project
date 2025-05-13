@@ -21,6 +21,7 @@ function Layout() {
         <div style={{  width: '100%' }}>
           <Outlet />
         </div>
+        
       </main>
       <Footer />
     </div>

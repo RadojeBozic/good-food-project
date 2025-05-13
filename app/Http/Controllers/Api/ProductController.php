@@ -89,26 +89,22 @@ class ProductController extends Controller
     }
 
     public function toggleFeatured($id)
-    {
+{
+    $product = Product::findOrFail($id); // ✅ prvo dohvatimo proizvod
+    $user = auth()->user();
 
-        if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
-            return response()->json(['message' => 'Nemate dozvolu.'], 403);
-        }
-        $product = Product::findOrFail($id);
-        $user = auth()->user();
-
-        if ($user->id !== $product->user_id && !in_array($user->role, ['admin', 'superadmin'])) {
-            return response()->json(['message' => 'Nedozvoljeno'], 403);
-        }
-
-        $product->featured = !$product->featured;
-        $product->save();
-
-        return response()->json([
-            'message' => $product->featured ? 'Proizvod je istaknut.' : 'Istaknut status je uklonjen.',
-            'product' => $product
-        ]);
+    if ($user->id !== $product->user_id && !in_array($user->role, ['admin', 'superadmin'])) {
+        return response()->json(['message' => 'Nedozvoljeno'], 403);
     }
+
+    $product->featured = !$product->featured;
+    $product->save();
+
+    return response()->json([
+        'message' => $product->featured ? 'Proizvod je istaknut.' : 'Istaknut status je uklonjen.',
+        'product' => $product
+    ]);
+}
 
     public function update(Request $request, $id)
     {
@@ -140,22 +136,19 @@ class ProductController extends Controller
     }
 
     public function destroy($id)
-    {
+{
+    $product = Product::findOrFail($id); // ✅ prvo dohvatimo
+    $user = auth()->user();
 
-        if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
-            return response()->json(['message' => 'Nemate dozvolu.'], 403);
-        }
-        $product = Product::findOrFail($id);
-        $user = auth()->user();
-
-        if ($user->id !== $product->user_id && !in_array($user->role, ['admin', 'superadmin'])) {
-            return response()->json(['message' => 'Nemate dozvolu za brisanje.'], 403);
-        }
-
-        $product->delete();
-
-        return response()->json(['message' => 'Proizvod je uspešno obrisan.']);
+    if ($user->id !== $product->user_id && !in_array($user->role, ['admin', 'superadmin'])) {
+        return response()->json(['message' => 'Nemate dozvolu za brisanje.'], 403);
     }
+
+    $product->delete();
+
+    return response()->json(['message' => 'Proizvod je uspešno obrisan.']);
+}
+
 
     public function checkout(Request $request)
     {
@@ -180,7 +173,6 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'quantity' => $item['quantity'],
                 'price' => $product->price,
-                'category_id' => $validated['category_id'],
             ]);
 
             $product->decrement('stock', $item['quantity']);
