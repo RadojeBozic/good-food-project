@@ -52,6 +52,8 @@ function AddProduct() {
         image: '',
         stock: 0,
         category_id: '',
+        brand: '',
+
       });
   
     } catch (err) {
@@ -101,7 +103,17 @@ function AddProduct() {
               required
             />
           </div>
-
+          <div className="mb-3">
+            <label className="form-label">Brend / Proizvođač</label>
+            <input
+              type="text"
+              name="brand"
+              className="form-control"
+              value={product.brand || ''}
+              onChange={handleChange}
+              placeholder="Unesite naziv brenda"
+            />
+          </div>
           <div className="mb-3">
             <label className="form-label">Cena (RSD)</label>
             <input
@@ -113,6 +125,18 @@ function AddProduct() {
               required
             />
           </div>
+          <div className="mb-3">
+            <label className="form-label">Stara cena (opciono)</label>
+            <input
+              type="number"
+              name="old_price"
+              className="form-control"
+              value={product.old_price || ''}
+              onChange={handleChange}
+              placeholder="Unesite staru cenu ako je proizvod na akciji"
+            />
+          </div>
+
 
           <div className="mb-3">
             <label className="form-label">Opis</label>
@@ -130,7 +154,7 @@ function AddProduct() {
             <label className="form-label">Kategorija</label>
             <select
               name="category_id"
-              value={product.category_id}
+              value={product.category_id || ''}
               onChange={handleChange}
               className="form-select"
               required

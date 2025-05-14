@@ -16,6 +16,8 @@ class Product extends Model
         'featured',
         'category_id',
         'barcode',
+        'brand',
+        'old_price',
 
     ];
 

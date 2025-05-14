@@ -104,6 +104,9 @@ function ProductList() {
                   value={filters.price_max} onChange={(e) => setFilters({ ...filters, price_max: e.target.value })} />
               </div>
               <div className="col-md-3">
+                <input type="text" placeholder="Brend" className="form-control" value={filters.brand || ''} onChange={(e) => setFilters({ ...filters, brand: e.target.value })} />
+              </div>
+              <div className="col-md-3">
                 <input type="text" placeholder="Bar kod" className="form-control"
                   value={filters.barcode} onChange={(e) => setFilters({ ...filters, barcode: e.target.value })} />
               </div>

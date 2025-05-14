@@ -19,11 +19,14 @@ class ProductController extends Controller
        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'old_price' => 'nullable|numeric|min:0',
             'description' => 'required|string',
             'image' => 'nullable|mimes:jpg,jpeg,png,webp|max:2048',
             'stock' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'barcode' => 'nullable|string|max:50|unique:products,barcode',
+            'brand' => 'nullable|string|max:100',
+            'brand' => $validated['brand'] ?? null,
 
         ]);
 
@@ -74,6 +77,11 @@ class ProductController extends Controller
         $query->where('price', '<=', $request->price_max);
     }
 
+    if ($request->filled('brand')) {
+    $query->where('brand', 'like', "%{$request->brand}%");
+}
+
+
     return $query->get();
 }
 
@@ -111,6 +119,28 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $user = auth()->user();
 
+          $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'old_price' => 'nullable|numeric|min:0',
+            'description' => 'required|string',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'barcode' => 'nullable|string|max:50|unique:products,barcode,' . $id,
+            'brand' => 'nullable|string|max:100',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+                
+        $product->update([
+                ...$validated,
+                'image' => $imagePath ?? $product->image,
+            ]);
+        
+                        if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('products', 'public');
+            } else {
+                $imagePath = $product->image;
+            }
         if (auth()->id() !== $product->user_id && !in_array(auth()->user()->role, ['admin', 'superadmin'])) {
             return response()->json(['message' => 'Nemate dozvolu.'], 403);
         }
@@ -119,18 +149,7 @@ class ProductController extends Controller
             return response()->json(['message' => 'Nedozvoljeno'], 403);
         }
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
-            'image' => 'nullable|mimes:jpg,jpeg,png,webp|max:2048',
-            'stock' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'barcode' => 'nullable|string|max:50|unique:products,barcode',
-
-        ]);
-
-        $product->update($validated);
+     
 
         return response()->json($product);
     }
